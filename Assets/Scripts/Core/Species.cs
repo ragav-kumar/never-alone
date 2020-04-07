@@ -13,7 +13,12 @@ namespace NeverAlone.Core
 		[SerializeField] Affinity affinity;
 		[SerializeField] Stats stats;
 #pragma warning restore 0649
+
+		private void Start()
+        { }
+
 		public Affinity GetAffinity() { return affinity; }
-		public Stats GetStats() { return stats; }
+        public Stats GetStats() { return stats; }
+        public DerivedStats GetDerivedStats() { return new DerivedStats(this); }
 	}
 }

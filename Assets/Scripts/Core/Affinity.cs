@@ -3,31 +3,27 @@ using System;
 
 namespace NeverAlone.Core
 {
+	/// <summary>
+	/// Defines the "type" of this species, as a three-tuple
+	/// </summary>
 	[Serializable]
 	public struct Affinity
 	{
-		/// <summary>
-		/// Massiveness, solidity
-		/// </summary>
+		[Tooltip("Massiveness, solidity")]
 		[Range(0, 1)] public float mass;
-		/// <summary>
-		/// High energy (hot, fast) vs Low energy (cold, slow)
-		/// </summary>
+		
+		[Tooltip("High energy (hot, fast) vs Low energy (cold, slow)")]
 		[Range(0, 1)] public float energy;
-		/// <summary>
-		/// Concretness vs abstraction
-		/// </summary>
+		
+		[Tooltip("Concreteness vs abstraction")]
 		[Range(0, 1)] public float abstraction;
 
-		public Affinity(float mass, float energy, float abstraction)
+		[Tooltip("Shorthand name for this affinity")]
+		public string type;
+
+		public Vector3 AsVector()
 		{
-			this.mass = mass;
-			this.energy = energy;
-			this.abstraction = abstraction;
-		}
-		public string calcType()
-		{
-			return "Indeterminate";
+			return new Vector3(mass, energy, abstraction);
 		}
 	}
 }

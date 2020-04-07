@@ -2,21 +2,49 @@ using UnityEngine;
 
 namespace NeverAlone.Core
 {
-	/// <summary>
-	/// A specific member of a species, including current state and genetics
-	/// </summary>
+	[RequireComponent(typeof(Animate.IController), typeof(ActionScheduler))]
 	public class Animal : MonoBehaviour
 	{
+		#region Serializable
 #pragma warning disable 0649
 		[SerializeField] Species species;
 #pragma warning restore 0649
+		#endregion
 
-		// Public properties
-		public DerivedStats derivedStats;
+		#region State
 
-		private void Start()
+		private int health;
+		private bool isDead = false;
+
+		#endregion
+
+		private void Start() {
+			if (!species) // If not overriden, then get species from same object
+			{
+				species = GetComponent<Species>();
+			}
+			health = species.GetDerivedStats().MaxHp;
+		}
+
+		public bool IsDead()
 		{
-			derivedStats = new DerivedStats(species);
+			return isDead;
+		}
+
+		public void TakeDamage(int damage)
+		{
+			health = Mathf.Max(health-damage, 0);
+			if (health <= 0)
+			{
+				Die();
+			}
+		}
+		private void Die()
+		{
+			if (isDead) return;
+			isDead = true;
+			GetComponent<Animate.IController>().Die();
+			GetComponent<ActionScheduler>().CancelCurrentAction();
 		}
 	}
 }
